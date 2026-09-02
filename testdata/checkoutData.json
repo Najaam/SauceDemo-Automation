@@ -1,0 +1,34 @@
+{
+    "validCustomer": {
+        "firstName": "John",
+        "lastName": "Doe",
+        "postalCode": "12345"
+    },
+    "invalidCheckoutScenarios": [
+        {
+            "testTitle": "Missing First Name",
+            "firstName": "",
+            "lastName": "Doe",
+            "postalCode": "12345",
+            "expectedError": "Error: First Name is required"
+        },
+        {
+            "testTitle": "Missing Last Name",
+            "firstName": "John",
+            "lastName": "",
+            "postalCode": "12345",
+            "expectedError": "Error: Last Name is required"
+        },
+        {
+            "testTitle": "Missing Postal Code",
+            "firstName": "John",
+            "lastName": "Doe",
+            "postalCode": "",
+            "expectedError": "Error: Postal Code is required"
+        }
+    ],
+    "orderCompletion": {
+        "expectedHeader": "Thank you for your order!",
+        "expectedMessage": "Your order has been dispatched, and will arrive just as fast as the pony can get there!"
+    }
+}

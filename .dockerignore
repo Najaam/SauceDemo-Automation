@@ -1,0 +1,16 @@
+node_modules
+npm-debug.log
+playwright-report
+blob-report
+playwright/.cache
+playwright/.auth
+test-results
+allure-results
+allure-report
+.git
+.gitignore
+.env
+.idea
+.vscode
+*.log
+

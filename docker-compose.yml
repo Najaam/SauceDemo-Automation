@@ -1,0 +1,38 @@
+services:
+  playwright-tests:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: playwright-runner
+    environment:
+      - CI=true
+    volumes:
+      - ./playwright-report:/app/playwright-report
+      - ./allure-results:/app/allure-results
+      - ./allure-report:/app/allure-report
+      - ./test-results:/app/test-results
+    command: npm run test:allure
+
+  playwright-report:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: playwright-report-server
+    ports:
+      - "9323:9323"
+    volumes:
+      - ./playwright-report:/app/playwright-report
+    command: npx playwright show-report --host 0.0.0.0 --port 9323
+
+  allure-report:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: allure-report-server
+    ports:
+      - "5050:5050"
+    volumes:
+      - ./allure-results:/app/allure-results
+      - ./allure-report:/app/allure-report
+    command: npx allure open allure-report -h 0.0.0.0 -p 5050
+
