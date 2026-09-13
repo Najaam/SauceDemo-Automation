@@ -21,7 +21,9 @@
     "docker:test:ui": "docker compose run --rm playwright-tests npm run test:ui",
     "docker:test:e2e": "docker compose run --rm playwright-tests npm run test:e2e",
     "docker:report": "docker compose up playwright-report",
-    "docker:allure": "docker compose up allure-report"
+    "docker:allure": "docker compose up allure-report",
+    "docker:deploy": "docker compose up -d allure-report playwright-report",
+    "docker:down": "docker compose down"
   },
   "keywords": [
     "playwright",

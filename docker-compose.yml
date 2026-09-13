@@ -3,6 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    image: saucedemo-automation:latest
     container_name: playwright-runner
     environment:
       - CI=true
@@ -17,7 +18,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    image: saucedemo-automation:latest
     container_name: playwright-report-server
+    restart: unless-stopped
     ports:
       - "9323:9323"
     volumes:
@@ -28,7 +31,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    image: saucedemo-automation:latest
     container_name: allure-report-server
+    restart: unless-stopped
     ports:
       - "5050:5050"
     volumes:
