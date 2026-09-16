@@ -7,6 +7,7 @@ pipeline {
     }
 
     environment {
+        PATH = "C:\\Users\\SP23BSCS0013-NAJMURR\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin;C:\\Program Files\\Git\\cmd;${env.PATH}"
         IMAGE_NAME = 'saucedemo-automation'
         COMPOSE_PROJECT_NAME = 'saucedemo'
         CI = 'true'
@@ -33,7 +34,7 @@ pipeline {
                     if (isUnix()) {
                         sh 'docker compose build'
                     } else {
-                        bat 'docker compose build'
+                        bat 'set "PATH=C:\\Users\\SP23BSCS0013-NAJMURR\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin;C:\\Program Files\\Git\\cmd;%PATH%" && docker compose build'
                     }
                 }
             }
@@ -51,7 +52,7 @@ pipeline {
                         )
                     } else {
                         exitCode = bat(
-                            script: 'docker compose up --exit-code-from playwright-tests playwright-tests',
+                            script: 'set "PATH=C:\\Users\\SP23BSCS0013-NAJMURR\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin;C:\\Program Files\\Git\\cmd;%PATH%" && docker compose up --exit-code-from playwright-tests playwright-tests',
                             returnStatus: true
                         )
                     }
@@ -121,9 +122,9 @@ pipeline {
                         sh 'docker compose up -d allure-report playwright-report'
                         sh 'docker compose ps'
                     } else {
-                        bat "docker tag ${IMAGE_NAME}:latest ${IMAGE_NAME}:deployed || echo Tagging skipped"
-                        bat 'docker compose up -d allure-report playwright-report'
-                        bat 'docker compose ps'
+                        bat "set \"PATH=C:\\Users\\SP23BSCS0013-NAJMURR\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin;C:\\Program Files\\Git\\cmd;%PATH%\" && docker tag ${IMAGE_NAME}:latest ${IMAGE_NAME}:deployed || echo Tagging skipped"
+                        bat 'set "PATH=C:\\Users\\SP23BSCS0013-NAJMURR\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin;C:\\Program Files\\Git\\cmd;%PATH%\" && docker compose up -d allure-report playwright-report'
+                        bat 'set "PATH=C:\\Users\\SP23BSCS0013-NAJMURR\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin;C:\\Program Files\\Git\\cmd;%PATH%\" && docker compose ps'
                     }
 
                     echo """
@@ -145,7 +146,7 @@ pipeline {
                 if (isUnix()) {
                     sh 'docker compose rm -f playwright-tests || true'
                 } else {
-                    bat 'docker compose rm -f playwright-tests || ver>nul'
+                    bat 'set "PATH=C:\\Users\\SP23BSCS0013-NAJMURR\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin;C:\\Program Files\\Git\\cmd;%PATH%\" && docker compose rm -f playwright-tests || ver>nul'
                 }
             }
         }
@@ -160,4 +161,3 @@ pipeline {
         }
     }
 }
-
