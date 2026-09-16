@@ -1,5 +1,5 @@
 class BaseApiClient {
-    constructor(request, baseUrl = 'https://demoqa.com') {
+    constructor(request, baseUrl = process.env.API_BASE_URL || 'https://demoqa.com') {
         this.request = request;
         this.baseUrl = baseUrl;
     }

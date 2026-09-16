@@ -12,6 +12,7 @@ export default defineConfig({
     ['allure-playwright', { outputFolder: 'allure-results' }]
   ],
   use: {
+    baseURL: process.env.BASE_URL || 'https://www.saucedemo.com',
     screenshot: 'on',
     trace: 'on-first-retry',
   },
