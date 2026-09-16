@@ -7,6 +7,7 @@ pipeline {
     }
 
     environment {
+        DOCKER_CONFIG = 'C:\\Users\\SP23BSCS0013-NAJMURR\\.docker'
         PATH = "C:\\Users\\SP23BSCS0013-NAJMURR\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin;C:\\Program Files\\Git\\cmd;${env.PATH}"
         IMAGE_NAME = 'saucedemo-automation'
         COMPOSE_PROJECT_NAME = 'saucedemo'
@@ -32,9 +33,9 @@ pipeline {
                 echo '=== Stage 2: Building Docker test runner image ==='
                 script {
                     if (isUnix()) {
-                        sh 'docker compose build'
+                        sh 'docker compose build || docker-compose build'
                     } else {
-                        bat 'set "PATH=C:\\Users\\SP23BSCS0013-NAJMURR\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin;C:\\Program Files\\Git\\cmd;%PATH%" && docker compose build'
+                        bat 'set "DOCKER_CONFIG=C:\\Users\\SP23BSCS0013-NAJMURR\\.docker" && set "PATH=C:\\Users\\SP23BSCS0013-NAJMURR\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin;C:\\Program Files\\Git\\cmd;%PATH%" && docker-compose build'
                     }
                 }
             }
@@ -47,12 +48,12 @@ pipeline {
                     def exitCode = 0
                     if (isUnix()) {
                         exitCode = sh(
-                            script: 'docker compose up --exit-code-from playwright-tests playwright-tests',
+                            script: 'docker compose up --exit-code-from playwright-tests playwright-tests || docker-compose up --exit-code-from playwright-tests playwright-tests',
                             returnStatus: true
                         )
                     } else {
                         exitCode = bat(
-                            script: 'set "PATH=C:\\Users\\SP23BSCS0013-NAJMURR\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin;C:\\Program Files\\Git\\cmd;%PATH%" && docker compose up --exit-code-from playwright-tests playwright-tests',
+                            script: 'set "DOCKER_CONFIG=C:\\Users\\SP23BSCS0013-NAJMURR\\.docker" && set "PATH=C:\\Users\\SP23BSCS0013-NAJMURR\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin;C:\\Program Files\\Git\\cmd;%PATH%" && docker-compose up --exit-code-from playwright-tests playwright-tests',
                             returnStatus: true
                         )
                     }
@@ -116,15 +117,13 @@ pipeline {
                 echo '=== Stage 5: CI Passed! Deploying services on Docker ==='
                 script {
                     if (isUnix()) {
-                        // Tag image as deployed
                         sh "docker tag ${IMAGE_NAME}:latest ${IMAGE_NAME}:deployed || true"
-                        // Deploy live report dashboards in detached mode
-                        sh 'docker compose up -d allure-report playwright-report'
-                        sh 'docker compose ps'
+                        sh 'docker compose up -d allure-report playwright-report || docker-compose up -d allure-report playwright-report'
+                        sh 'docker compose ps || docker-compose ps'
                     } else {
-                        bat "set \"PATH=C:\\Users\\SP23BSCS0013-NAJMURR\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin;C:\\Program Files\\Git\\cmd;%PATH%\" && docker tag ${IMAGE_NAME}:latest ${IMAGE_NAME}:deployed || echo Tagging skipped"
-                        bat 'set "PATH=C:\\Users\\SP23BSCS0013-NAJMURR\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin;C:\\Program Files\\Git\\cmd;%PATH%\" && docker compose up -d allure-report playwright-report'
-                        bat 'set "PATH=C:\\Users\\SP23BSCS0013-NAJMURR\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin;C:\\Program Files\\Git\\cmd;%PATH%\" && docker compose ps'
+                        bat "set \"DOCKER_CONFIG=C:\\Users\\SP23BSCS0013-NAJMURR\\.docker\" && set \"PATH=C:\\Users\\SP23BSCS0013-NAJMURR\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin;C:\\Program Files\\Git\\cmd;%PATH%\" && docker tag ${IMAGE_NAME}:latest ${IMAGE_NAME}:deployed || echo Tagging skipped"
+                        bat 'set "DOCKER_CONFIG=C:\\Users\\SP23BSCS0013-NAJMURR\\.docker\" && set "PATH=C:\\Users\\SP23BSCS0013-NAJMURR\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin;C:\\Program Files\\Git\\cmd;%PATH%\" && docker-compose up -d allure-report playwright-report'
+                        bat 'set "DOCKER_CONFIG=C:\\Users\\SP23BSCS0013-NAJMURR\\.docker\" && set "PATH=C:\\Users\\SP23BSCS0013-NAJMURR\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin;C:\\Program Files\\Git\\cmd;%PATH%\" && docker-compose ps'
                     }
 
                     echo """
@@ -144,9 +143,9 @@ pipeline {
             script {
                 echo '=== Cleaning up ephemeral test runner container ==='
                 if (isUnix()) {
-                    sh 'docker compose rm -f playwright-tests || true'
+                    sh 'docker compose rm -f playwright-tests || docker-compose rm -f playwright-tests || true'
                 } else {
-                    bat 'set "PATH=C:\\Users\\SP23BSCS0013-NAJMURR\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin;C:\\Program Files\\Git\\cmd;%PATH%\" && docker compose rm -f playwright-tests || ver>nul'
+                    bat 'set "DOCKER_CONFIG=C:\\Users\\SP23BSCS0013-NAJMURR\\.docker\" && set "PATH=C:\\Users\\SP23BSCS0013-NAJMURR\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin;C:\\Program Files\\Git\\cmd;%PATH%\" && docker-compose rm -f playwright-tests || ver>nul'
                 }
             }
         }
