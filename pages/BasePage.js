@@ -25,11 +25,9 @@ class BasePage {
     async clickElement(locator) {
         await locator.click();
     }
-
     async fillText(locator, text) {
         await locator.fill(text);
     }
-
     async getElementText(locator) {
         return await locator.textContent();
     }
