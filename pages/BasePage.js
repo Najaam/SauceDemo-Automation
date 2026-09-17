@@ -6,19 +6,15 @@ class BasePage {
     async navigate(url) {
         await this.page.goto(url);
     }
-
     async getTitle() {
         return await this.page.title();
     }
-
     async getURL() {
         return this.page.url();
     }
-
     async waitForPageLoad() {
         await this.page.waitForLoadState('domcontentloaded');
     }
-
     async takeScreenshot(testInfo, stepName = 'screenshot') {
         const screenshot = await this.page.screenshot({ fullPage: true });
         if (testInfo) {
@@ -26,7 +22,6 @@ class BasePage {
         }
         return screenshot;
     }
-
     async clickElement(locator) {
         await locator.click();
     }
