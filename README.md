@@ -149,3 +149,7 @@ The included [`Jenkinsfile`](./Jenkinsfile) provides automated CI/CD:
 5. **Deploy**: **Conditionally deploys** reporting servers on Docker when all tests pass!
 
 For detailed instructions on configuring Jenkins plugins and setting up the GitHub webhook, refer to [`JENKINS_SETUP.md`](./JENKINS_SETUP.md).
+
+> [!NOTE]
+> **CI/CD Webhook Trigger**: Automated pipeline execution and Docker container deployment configured for GitHub `push` events on branch `main`.
+
