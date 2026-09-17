@@ -4,6 +4,8 @@ pipeline {
     triggers {
         // Automatically triggers build when code is pushed to GitHub repository
         githubPush()
+        // Polls GitHub every minute from local Jenkins to detect new commits automatically
+        pollSCM('* * * * *')
     }
 
     environment {
